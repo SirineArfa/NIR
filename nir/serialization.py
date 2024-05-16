@@ -22,14 +22,10 @@ def try_byte_to_str(a: Union[bytes, Any]) -> Union[str, Any]:
 def read_node(node: Any) -> nir.NIRNode:
     """Read a graph from a HDF/conn5 file."""
     if node["type"][()] == b"Affine":
-        return nir.Affine(
-            weight=node["weight"][()], bias=node["bias"][()], **_read_metadata(node)
-        )
+        return nir.Affine(weight=node["weight"][()], bias=node["bias"][()], **_read_metadata(node))
     elif node["type"][()] == b"Conv1d":
         return nir.Conv1d(
-            input_shape=(
-                node["input_shape"][()] if "input_shape" in node.keys() else None
-            ),
+            input_shape=(node["input_shape"][()] if "input_shape" in node.keys() else None),
             weight=node["weight"][()],
             stride=node["stride"][()],
             padding=node["padding"][()],
@@ -40,9 +36,7 @@ def read_node(node: Any) -> nir.NIRNode:
         )
     elif node["type"][()] == b"Conv2d":
         return nir.Conv2d(
-            input_shape=(
-                node["input_shape"][()] if "input_shape" in node.keys() else None
-            ),
+            input_shape=(node["input_shape"][()] if "input_shape" in node.keys() else None),
             weight=node["weight"][()],
             stride=node["stride"][()],
             padding=node["padding"][()],
@@ -70,21 +64,15 @@ def read_node(node: Any) -> nir.NIRNode:
         return nir.Flatten(
             start_dim=node["start_dim"][()],
             end_dim=node["end_dim"][()],
-            input_type={
-                "input": node["input_type"][()] if "input_type" in node.keys() else None
-            },
+            input_type={"input": node["input_type"][()] if "input_type" in node.keys() else None},
             **_read_metadata(node),
         )
     elif node["type"][()] == b"I":
         return nir.I(r=node["r"][()], **_read_metadata(node))
     elif node["type"][()] == b"IF":
-        return nir.IF(
-            r=node["r"][()], v_threshold=node["v_threshold"][()], **_read_metadata(node)
-        )
+        return nir.IF(r=node["r"][()], v_threshold=node["v_threshold"][()], **_read_metadata(node))
     elif node["type"][()] == b"Input":
-        return nir.Input(
-            input_type={"input": node["shape"][()]}, **_read_metadata(node)
-        )
+        return nir.Input(input_type={"input": node["shape"][()]}, **_read_metadata(node))
     elif node["type"][()] == b"LI":
         return nir.LI(
             tau=node["tau"][()],
@@ -119,9 +107,7 @@ def read_node(node: Any) -> nir.NIRNode:
             **_read_metadata(node),
         )
     elif node["type"][()] == b"Output":
-        return nir.Output(
-            output_type={"output": node["shape"][()]}, **_read_metadata(node)
-        )
+        return nir.Output(output_type={"output": node["shape"][()]}, **_read_metadata(node))
     elif node["type"][()] == b"Scale":
         return nir.Scale(scale=node["scale"][()], **_read_metadata(node))
     elif node["type"][()] == b"Threshold":

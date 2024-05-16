@@ -31,16 +31,10 @@ class Flatten(NIRNode):
             self.input_type = {"input": None}
             self.output_type = {"output": None}
         else:
-            self.output_type = {
-                "output": calc_flatten_output(
-                    self.input_type["input"], self.start_dim, self.end_dim
-                )
-            }
+            self.output_type = {"output": calc_flatten_output(self.input_type["input"], self.start_dim, self.end_dim)}
             # make sure input and output shape are valid
             if np.prod(self.input_type["input"]) != np.prod(self.output_type["output"]):
-                raise ValueError(
-                    "input and output shape must have same number of elements"
-                )
+                raise ValueError("input and output shape must have same number of elements")
 
     def to_dict(self) -> Dict[str, Any]:
         ret = super().to_dict()
@@ -49,7 +43,5 @@ class Flatten(NIRNode):
 
     @classmethod
     def from_dict(cls, node: Dict[str, Any]):
-        node["input_type"] = {
-            "input": node["input_type"] if "input_type" in node else None
-        }
+        node["input_type"] = {"input": node["input_type"] if "input_type" in node else None}
         return super().from_dict(node)

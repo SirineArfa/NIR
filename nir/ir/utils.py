@@ -68,16 +68,8 @@ def calculate_conv_output(
 
 def calc_flatten_output(input_shape: Sequence[int], start_dim: int, end_dim: int):
     start_shape = np.array(input_shape[:start_dim]) if start_dim != 0 else []
-    middle_shape = (
-        np.prod(input_shape[start_dim : end_dim + 1])
-        if end_dim != -1
-        else np.prod(input_shape[start_dim:])
-    )
-    end_shape = (
-        np.array(input_shape[end_dim + 1 :])
-        if end_dim != -1 and end_dim != len(input_shape) - 1
-        else []
-    )
+    middle_shape = np.prod(input_shape[start_dim : end_dim + 1]) if end_dim != -1 else np.prod(input_shape[start_dim:])
+    end_shape = np.array(input_shape[end_dim + 1 :]) if end_dim != -1 and end_dim != len(input_shape) - 1 else []
     return np.array(
         [
             *start_shape,
@@ -87,9 +79,7 @@ def calc_flatten_output(input_shape: Sequence[int], start_dim: int, end_dim: int
     )
 
 
-def _index_tuple(
-    tuple: Union[int, Sequence[int]], index: int
-) -> Union[int, np.ndarray]:
+def _index_tuple(tuple: Union[int, Sequence[int]], index: int) -> Union[int, np.ndarray]:
     """If the input is a tuple/array, index it.
 
     Otherwise, return it as-is.

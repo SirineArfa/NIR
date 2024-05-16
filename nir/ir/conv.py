@@ -47,18 +47,14 @@ class Conv1d(NIRNode):
 
     def __post_init__(self):
         if isinstance(self.padding, str) and self.padding not in ["same", "valid"]:
-            raise ValueError(
-                f"padding must be 'same', 'valid', or int, not {self.padding}"
-            )
+            raise ValueError(f"padding must be 'same', 'valid', or int, not {self.padding}")
         if self.input_shape is None:
             # leave input and output types undefined
             self.input_type = {"input": None}
             self.output_type = {"output": None}
         else:
             # infer input and output types from input_shape
-            self.input_type = {
-                "input": np.array([self.weight.shape[1], self.input_shape])
-            }
+            self.input_type = {"input": np.array([self.weight.shape[1], self.input_shape])}
             output_shape = calculate_conv_output(
                 self.input_shape,
                 self.padding,
@@ -66,9 +62,7 @@ class Conv1d(NIRNode):
                 self.weight.shape[2],
                 self.stride,
             )
-            self.output_type = {
-                "output": np.array([self.weight.shape[0], *output_shape])
-            }
+            self.output_type = {"output": np.array([self.weight.shape[0], *output_shape])}
 
 
 @dataclass(eq=False)
@@ -109,9 +103,7 @@ class Conv2d(NIRNode):
 
     def __post_init__(self):
         if isinstance(self.padding, str) and self.padding not in ["same", "valid"]:
-            raise ValueError(
-                f"padding must be 'same', 'valid', or int, not {self.padding}"
-            )
+            raise ValueError(f"padding must be 'same', 'valid', or int, not {self.padding}")
         if isinstance(self.padding, int):
             self.padding = (self.padding, self.padding)
         if isinstance(self.stride, int):
@@ -124,9 +116,7 @@ class Conv2d(NIRNode):
             self.output_type = {"output": None}
         else:
             # infer input and output types from input_shape
-            self.input_type = {
-                "input": np.array([self.weight.shape[1], *self.input_shape])
-            }
+            self.input_type = {"input": np.array([self.weight.shape[1], *self.input_shape])}
             output_shape = calculate_conv_output(
                 self.input_shape,
                 self.padding,
@@ -134,6 +124,4 @@ class Conv2d(NIRNode):
                 self.weight.shape[2],
                 self.stride,
             )
-            self.output_type = {
-                "output": np.array([self.weight.shape[0], *output_shape])
-            }
+            self.output_type = {"output": np.array([self.weight.shape[0], *output_shape])}
